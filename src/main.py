@@ -4,7 +4,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from src import config, telegram, translate
+from src import alertlog, config, telegram, translate
 from src.sources import nvd, rss
 from src.store import SeenStore
 
@@ -40,7 +40,11 @@ def main() -> int:
 
         for feed_url in vendor.get("rss_feeds", []):
             try:
-                items.extend(rss.fetch_new_entries(feed_url, config.LOOKBACK_DAYS))
+                items.extend(
+                    rss.fetch_new_entries(
+                        feed_url, config.LOOKBACK_DAYS, keywords=vendor.get("nvd_keywords", [])
+                    )
+                )
             except Exception:
                 log.exception("Error consultando RSS %s para %s", feed_url, label)
                 total_errors += 1
@@ -54,6 +58,7 @@ def main() -> int:
                 text = telegram.format_message(label, item)
                 telegram.send_message(config.TELEGRAM_BOT_TOKEN, config.TELEGRAM_CHAT_ID, text)
                 store.add(item["id"])
+                alertlog.append(config.ALERT_LOG_FILE, label, item)
                 total_sent += 1
                 log.info("Enviado [%s] %s", label, item["id"])
             except Exception:
@@ -61,6 +66,7 @@ def main() -> int:
                 total_errors += 1
 
     store.save()
+    alertlog.prune(config.ALERT_LOG_FILE)
     log.info("Resumen: %d alertas nuevas enviadas, %d errores.", total_sent, total_errors)
     return 1 if total_errors else 0
 

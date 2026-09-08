@@ -24,6 +24,7 @@ LOOKBACK_DAYS = int(os.environ.get("LOOKBACK_DAYS", "3"))
 
 VENDORS_FILE = ROOT_DIR / "config" / "vendors.json"
 SEEN_FILE = ROOT_DIR / "data" / "seen.json"
+ALERT_LOG_FILE = ROOT_DIR / "data" / "alert_log.jsonl"
 
 
 def load_vendors() -> dict:

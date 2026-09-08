@@ -10,8 +10,8 @@
     "rss_feeds": []
   },
   "fortigate": {
-    "label": "Fortinet / FortiGate",
-    "nvd_keywords": ["fortinet", "fortigate", "fortios"],
+    "label": "Fortinet (FortiOS/FortiSwitch/FortiAP)",
+    "nvd_keywords": ["fortios", "fortiswitch", "fortiap"],
     "rss_feeds": ["https://filestore.fortinet.com/fortiguard/rss/ir.xml"]
   },
   "huawei": {
@@ -37,6 +37,11 @@
   "cambium": {
     "label": "Cambium Networks",
     "nvd_keywords": ["cambium networks", "cambium"],
+    "rss_feeds": []
+  },
+  "ruijie": {
+    "label": "Ruijie Networks",
+    "nvd_keywords": ["ruijie"],
     "rss_feeds": []
   }
 }

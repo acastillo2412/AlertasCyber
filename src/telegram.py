@@ -22,7 +22,7 @@ SEVERITY_EMOJI = {
 }
 
 
-def _escape_html(text: str) -> str:
+def escape_html(text: str) -> str:
     return text.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
 
 
@@ -35,11 +35,11 @@ def format_message(vendor_label: str, item: dict) -> str:
         description = description[:497] + "..."
 
     lines = [
-        f"{emoji} <b>{_escape_html(vendor_label)}</b> — {_escape_html(item['title'])}",
-        f"Severidad: {_escape_html(item.get('severity', 'N/D'))}{score_txt} | Fuente: {item.get('source')}",
+        f"{emoji} <b>{escape_html(vendor_label)}</b> — {escape_html(item['title'])}",
+        f"Severidad: {escape_html(item.get('severity', 'N/D'))}{score_txt} | Fuente: {item.get('source')}",
     ]
     if description:
-        lines.append(_escape_html(description))
+        lines.append(escape_html(description))
     lines.append(item.get("url", ""))
     return "\n".join(lines)
 

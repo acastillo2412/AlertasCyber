@@ -6,12 +6,20 @@ from datetime import datetime, timedelta, timezone
 import feedparser
 
 
-def fetch_new_entries(feed_url: str, lookback_days: int) -> list[dict]:
+def fetch_new_entries(feed_url: str, lookback_days: int, keywords: list[str] | None = None) -> list[dict]:
+    """Si se pasan keywords, solo se devuelven entradas cuyo titulo o resumen
+    contenga alguna de ellas (evita ruido de feeds que cubren todo el fabricante)."""
     cutoff = datetime.now(timezone.utc) - timedelta(days=lookback_days)
     parsed = feedparser.parse(feed_url)
+    keywords_lower = [k.lower() for k in keywords] if keywords else None
 
     entries = []
     for entry in parsed.entries:
+        if keywords_lower:
+            haystack = f"{entry.get('title', '')} {entry.get('summary', '')}".lower()
+            if not any(k in haystack for k in keywords_lower):
+                continue
+
         published_struct = entry.get("published_parsed") or entry.get("updated_parsed")
         if published_struct:
             published_dt = datetime.fromtimestamp(timegm(published_struct), tz=timezone.utc)

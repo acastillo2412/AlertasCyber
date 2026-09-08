@@ -3,4 +3,5 @@ venv/
 __pycache__/
 *.pyc
 data/seen.json
+data/alert_log.jsonl
 data/*.log
