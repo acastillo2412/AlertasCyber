@@ -1,0 +1,42 @@
+{
+  "mikrotik": {
+    "label": "MikroTik",
+    "nvd_keywords": ["mikrotik", "routeros"],
+    "rss_feeds": []
+  },
+  "altai": {
+    "label": "Altai Technologies",
+    "nvd_keywords": ["altai technologies", "altai wireless"],
+    "rss_feeds": []
+  },
+  "fortigate": {
+    "label": "Fortinet / FortiGate",
+    "nvd_keywords": ["fortinet", "fortigate", "fortios"],
+    "rss_feeds": ["https://filestore.fortinet.com/fortiguard/rss/ir.xml"]
+  },
+  "huawei": {
+    "label": "Huawei",
+    "nvd_keywords": ["huawei"],
+    "rss_feeds": []
+  },
+  "sonicwall": {
+    "label": "SonicWall",
+    "nvd_keywords": ["sonicwall"],
+    "rss_feeds": []
+  },
+  "unifi": {
+    "label": "Ubiquiti / UniFi",
+    "nvd_keywords": ["ubiquiti", "unifi"],
+    "rss_feeds": []
+  },
+  "tplink": {
+    "label": "TP-Link",
+    "nvd_keywords": ["tp-link", "tplink"],
+    "rss_feeds": []
+  },
+  "cambium": {
+    "label": "Cambium Networks",
+    "nvd_keywords": ["cambium networks", "cambium"],
+    "rss_feeds": []
+  }
+}
