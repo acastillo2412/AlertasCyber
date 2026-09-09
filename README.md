@@ -1,8 +1,16 @@
 # AlertaCyber
 
 Vigila vulnerabilidades (CVE) de MikroTik, Altai, Fortinet (FortiOS/FortiSwitch/FortiAP), Huawei,
-SonicWall, Ubiquiti/UniFi, TP-Link, Cambium Networks y Ruijie, y envía alertas nuevas a un grupo
-de Telegram. Además manda un resumen de críticas cada 12 horas y un resumen semanal los lunes.
+SonicWall, Ubiquiti/UniFi, TP-Link, Cambium Networks, Ruijie, Windows (10/11), Windows Server,
+Debian y Ubuntu, y envía alertas nuevas a un grupo de Telegram. Además manda un resumen de
+críticas cada 12 horas y un resumen semanal los lunes.
+
+Para Windows, Windows Server, Debian y Ubuntu solo se avisa de vulnerabilidades **CRITICAL**
+(campo `severities` en `config/vendors.json`) — el volumen de CVEs de sistemas operativos es muy
+superior al de los fabricantes de red (p. ej. Windows Server tiene ~70 CVEs/mes, de las que
+normalmente 3-4 son críticas). Las no críticas ni siquiera se registran: se descartan antes de
+guardarse en `data/seen.json` o `data/alert_log.jsonl`, así que tampoco aparecen en los
+resúmenes.
 
 ## Fuentes de datos
 
@@ -145,10 +153,16 @@ Edita `config/vendors.json`. Cada entrada admite:
 "clave": {
   "label": "Nombre mostrado en las alertas",
   "nvd_keywords": ["palabra1", "palabra2"],
-  "rss_feeds": ["https://.../feed.xml"]
+  "rss_feeds": ["https://.../feed.xml"],
+  "severities": ["CRITICAL"]
 }
 ```
 
 Las `nvd_keywords` tambien se usan para filtrar los `rss_feeds` de ese mismo fabricante, asi que
 mantenlas especificas al producto que te interesa (evita palabras genericas como el nombre del
 fabricante si solo quieres un subconjunto de sus productos, como pasa con Fortinet).
+
+`severities` es opcional (por defecto se avisa de todas). Si se indica, solo se envian y registran
+los CVE cuya severidad este en esa lista (valores validos: `CRITICAL`, `HIGH`, `MEDIUM`, `LOW`).
+Se usa en Windows/Windows Server/Debian/Ubuntu porque su volumen de CVEs es demasiado alto para
+avisar de todo.

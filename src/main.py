@@ -49,6 +49,11 @@ def main() -> int:
                 log.exception("Error consultando RSS %s para %s", feed_url, label)
                 total_errors += 1
 
+        allowed_severities = vendor.get("severities")
+        if allowed_severities:
+            allowed_severities = {s.upper() for s in allowed_severities}
+            items = [i for i in items if (i.get("severity") or "").upper() in allowed_severities]
+
         new_items = [item for item in items if not store.has(item["id"])]
         new_items.sort(key=lambda i: i.get("published") or "")
 

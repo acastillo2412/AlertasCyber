@@ -43,5 +43,29 @@
     "label": "Ruijie Networks",
     "nvd_keywords": ["ruijie"],
     "rss_feeds": []
+  },
+  "windows": {
+    "label": "Microsoft Windows (10/11)",
+    "nvd_keywords": ["windows 10", "windows 11"],
+    "rss_feeds": [],
+    "severities": ["CRITICAL"]
+  },
+  "windows_server": {
+    "label": "Windows Server",
+    "nvd_keywords": ["windows server"],
+    "rss_feeds": [],
+    "severities": ["CRITICAL"]
+  },
+  "debian": {
+    "label": "Debian",
+    "nvd_keywords": ["debian"],
+    "rss_feeds": [],
+    "severities": ["CRITICAL"]
+  },
+  "ubuntu": {
+    "label": "Ubuntu",
+    "nvd_keywords": ["ubuntu"],
+    "rss_feeds": [],
+    "severities": ["CRITICAL"]
   }
 }
