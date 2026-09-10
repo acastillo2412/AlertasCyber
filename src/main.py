@@ -4,7 +4,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from src import alertlog, config, telegram, translate
+from src import alertlog, config, kev, telegram, translate
 from src.sources import nvd, rss
 from src.store import SeenStore
 
@@ -18,6 +18,7 @@ log = logging.getLogger("alertacyber")
 def main() -> int:
     vendors = config.load_vendors()
     store = SeenStore(config.SEEN_FILE)
+    kev_ids = kev.fetch_kev_ids()
 
     total_sent = 0
     total_errors = 0
@@ -60,6 +61,7 @@ def main() -> int:
         for item in new_items:
             try:
                 item["description"] = translate.to_spanish(item.get("description", ""))
+                item["kev"] = item["id"] in kev_ids
                 text = telegram.format_message(label, item)
                 telegram.send_message(config.TELEGRAM_BOT_TOKEN, config.TELEGRAM_CHAT_ID, text)
                 store.add(item["id"])

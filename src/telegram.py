@@ -38,6 +38,8 @@ def format_message(vendor_label: str, item: dict) -> str:
         f"{emoji} <b>{escape_html(vendor_label)}</b> — {escape_html(item['title'])}",
         f"Severidad: {escape_html(item.get('severity', 'N/D'))}{score_txt} | Fuente: {item.get('source')}",
     ]
+    if item.get("kev"):
+        lines.append("🚨 <b>Explotada activamente (CISA KEV)</b> — priorizar el parcheo de inmediato.")
     if description:
         lines.append(escape_html(description))
     lines.append(item.get("url", ""))
