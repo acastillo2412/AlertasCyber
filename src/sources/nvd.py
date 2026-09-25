@@ -5,6 +5,8 @@ from datetime import datetime, timedelta, timezone
 
 import requests
 
+from src.sources.keywords import matches_any
+
 NVD_URL = "https://services.nvd.nist.gov/rest/json/cves/2.0"
 
 
@@ -25,6 +27,15 @@ def _description(cve: dict) -> str:
         if d.get("lang") == "en":
             return d.get("value", "")
     return ""
+
+
+def _cpe_criteria(cve: dict) -> str:
+    criteria = []
+    for config in cve.get("configurations", []):
+        for node in config.get("nodes", []):
+            for match in node.get("cpeMatch", []):
+                criteria.append(match.get("criteria", ""))
+    return " ".join(criteria)
 
 
 def fetch_new_cves(keywords: list[str], lookback_days: int, api_key: str | None) -> list[dict]:
@@ -53,11 +64,15 @@ def fetch_new_cves(keywords: list[str], lookback_days: int, api_key: str | None)
             cve_id = cve.get("id")
             if not cve_id or cve_id in results:
                 continue
+            description = _description(cve)
+            # NVD busca subcadenas ("unifi" encuentra "unified"): se exige palabra completa.
+            if not matches_any(keywords, f"{description} {_cpe_criteria(cve)}"):
+                continue
             severity, score = _severity_from_cve(cve)
             results[cve_id] = {
                 "id": cve_id,
                 "title": cve_id,
-                "description": _description(cve),
+                "description": description,
                 "severity": severity,
                 "score": score,
                 "published": cve.get("published"),

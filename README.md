@@ -162,6 +162,11 @@ Las `nvd_keywords` tambien se usan para filtrar los `rss_feeds` de ese mismo fab
 mantenlas especificas al producto que te interesa (evita palabras genericas como el nombre del
 fabricante si solo quieres un subconjunto de sus productos, como pasa con Fortinet).
 
+Cada palabra de una keyword tiene que aparecer como **palabra completa** en la descripcion o en los
+CPE afectados del CVE (o en el titulo/resumen del RSS). La busqueda de NVD por si sola encuentra
+subcadenas (`unifi` coincidia con "unified" en avisos de Wazuh), asi que `src/sources/keywords.py`
+vuelve a comprobarlo en local.
+
 `severities` es opcional (por defecto se avisa de todas). Si se indica, solo se envian y registran
 los CVE cuya severidad este en esa lista (valores validos: `CRITICAL`, `HIGH`, `MEDIUM`, `LOW`).
 Se usa en Windows/Windows Server/Debian/Ubuntu porque su volumen de CVEs es demasiado alto para
